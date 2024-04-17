@@ -14,14 +14,9 @@ var correct_item_name = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	available_items = kitchen.get_available_items().duplicate()
+	#available_items = kitchen.get_available_items().duplicate()
 	reset_items()
 	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func set_button(button:IngredientButton):
 	var ingredient = available_items.pick_random() # Get random ingredient
@@ -49,7 +44,7 @@ func reset_items():
 		correct_item_name = (((button_3 as IngredientButton).ingredient.instantiate() as Ingredient).food_name)
 	if correct_item == 3:
 		correct_item_name = (((button_4 as IngredientButton).ingredient.instantiate() as Ingredient).food_name)
-	print("Correct item = " + str(correct_item_name) + " or " + str(correct_item + 1))
+	print("Correct item = " + str(correct_item_name) + " or button #" + str(correct_item + 1))
 
 func _on_button_button_down():
 	if correct_item == 0:

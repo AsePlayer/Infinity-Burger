@@ -7,6 +7,7 @@ extends Sprite2D
 @onready var play_button = $MenuScreen/PlayButton
 @onready var credits_button = $MenuScreen/CreditsButton
 
+@onready var plate:Node2D = $"../../Table/Plate"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,6 +33,7 @@ func _on_back_button_button_down():
 	menu_screen.visible = true
 	credits_screen.visible = false
 	game_screen.visible = false
+	plate.plate_disabled = true
 	pass # Replace with function body.
 
 
@@ -40,4 +42,6 @@ func _on_play_button_button_down():
 	menu_screen.visible = false
 	credits_screen.visible = false
 	game_screen.visible = true
+	plate.plate_disabled = false
+	plate.position.y = 50 # reset plate placement
 	pass # Replace with function body.
