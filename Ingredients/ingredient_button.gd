@@ -33,3 +33,7 @@ func _on_button_down():
 	var scene = ingredient.instantiate()
 	queue.append(scene)
 	pass # Replace with function body.
+
+func spawn_starter_bun():
+	var BOTTOM_BUN = preload("res://Scenes/Ingredients/BottomBun.tscn").instantiate()
+	queue.append(BOTTOM_BUN)
