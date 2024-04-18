@@ -44,3 +44,6 @@ func modify_data(key, value):
 	save_game()
 	print("Modified " + str(key) + " with value: " + str(value))
 	pass
+
+func get_data(key):
+	return save_data[str(key)]
