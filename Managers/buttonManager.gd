@@ -1,10 +1,13 @@
 extends Control
 
 @onready var game_manager = get_owner().get_child(0)
-@onready var kitchen:Kitchen = game_manager.get_child(0) as Kitchen
+
+@export var kitchen:Kitchen
+
 
 var available_items
-var correct_item = 0
+var correct_item_id = 0
+var correct_item:Ingredient
 var correct_item_name = ""
 
 @onready var button = $Button
@@ -13,6 +16,14 @@ var correct_item_name = ""
 @onready var button_4 = $Button4
 
 @export var message_box:MessageBox
+
+@export var dollars_total:RichTextLabel
+@export var dollars_for_burger:RichTextLabel
+@export var total_value_gameover_screen:RichTextLabel
+
+var points:float
+
+var no_cheese = true
 var phrases_normal = [
 	"The item you are looking for is ",
 	"Hey, got any ",
@@ -215,45 +226,68 @@ func reset_items():
 	set_button(button_3)
 	set_button(button_4)
 	
-	correct_item = randi_range(0,3)
+	correct_item_id = randi_range(0,3)
 	
-	if correct_item == 0:
-		correct_item_name = (((button as IngredientButton).ingredient.instantiate() as Ingredient).food_name)
-	if correct_item == 1:
-		correct_item_name = (((button_2 as IngredientButton).ingredient.instantiate() as Ingredient).food_name)
-	if correct_item == 2:
-		correct_item_name = (((button_3 as IngredientButton).ingredient.instantiate() as Ingredient).food_name)
-	if correct_item == 3:
-		correct_item_name = (((button_4 as IngredientButton).ingredient.instantiate() as Ingredient).food_name)
-	print("Correct item = " + str(correct_item_name) + " or button #" + str(correct_item + 1))
+	if correct_item_id == 0:
+		correct_item = (((button as IngredientButton).ingredient.instantiate() as Ingredient))
+	if correct_item_id == 1:
+		correct_item = (((button_2 as IngredientButton).ingredient.instantiate() as Ingredient))
+	if correct_item_id == 2:
+		correct_item = (((button_3 as IngredientButton).ingredient.instantiate() as Ingredient))
+	if correct_item_id == 3:
+		correct_item = (((button_4 as IngredientButton).ingredient.instantiate() as Ingredient))
+	
+	dollars_for_burger.text = "[center]%s[/center]" % ("$" + str(points))
+	total_value_gameover_screen.text = ("$" + str(points))
+	correct_item_name = correct_item.food_name
+	print("Correct item = " + str(correct_item_name) + " or button #" + str(correct_item_id + 1))
 	
 	message_box.set_text(phrases_normal.pick_random() + correct_item_name)
 	
-
-
+	
 func _on_button_button_down():
-	if correct_item == 0:
+	if correct_item_id == 0:
+		points += correct_item.value
 		print("button_1 correct!")
+	else:
+		points -= correct_item.value
+		print("button_1 incorrect!")
+		
 	reset_items()
 	pass # Replace with function body.
 
 
 func _on_button_2_button_down():
-	if correct_item == 1:
+	if correct_item_id == 1:
+		points += correct_item.value
 		print("button_2 correct!")
+	else:
+		points -= correct_item.value
+		print("button_2 incorrect!")
+		
 	reset_items()
 	pass # Replace with function body.
 
 
 func _on_button_3_button_down():
-	if correct_item == 2:
+	if correct_item_id == 2:
+		points += correct_item.value
 		print("button_3 correct!")
+	else:
+		points -= correct_item.value
+		print("button_3 incorrect!")
+		
 	reset_items()
 	pass # Replace with function body.
 
 
 func _on_button_4_button_down():
-	if correct_item == 3:
+	if correct_item_id == 3:
+		points += correct_item.value
 		print("button_4 correct!")
+	else:
+		points -= correct_item.value
+		print("button_4 incorrect!")
+		
 	reset_items()
 	pass # Replace with function body.

@@ -18,7 +18,6 @@ func _ready():
 func _process(delta):
 	pass
 
-
 # Animates messages like a tablet notification
 func set_text(text):
 	if text == current_text: return # Prevent spamming same text

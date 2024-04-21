@@ -35,5 +35,10 @@ func _on_button_down():
 	pass # Replace with function body.
 
 func spawn_starter_bun():
-	var BOTTOM_BUN = preload("res://Scenes/Ingredients/BottomBun.tscn").instantiate()
+	var BOTTOM_BUN = preload("res://Scenes/Ingredients/Buns/BottomBun.tscn").instantiate()
+	z_depth = 0
 	queue.append(BOTTOM_BUN)
+
+func spawn_exit_bun():
+	var TOP_BUN = preload("res://Scenes/Ingredients/Buns/TopBun.tscn").instantiate()
+	queue.append(TOP_BUN)

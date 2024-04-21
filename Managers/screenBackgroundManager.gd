@@ -10,12 +10,6 @@ func _ready():
 	screen.texture = get_item_icon(int(game_data.get_data("screen_color")))
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 func _on_item_clicked(index, at_position, mouse_button_index):
 	var purchases = game_data.get_data("screen_colors")
 	print(purchases)
