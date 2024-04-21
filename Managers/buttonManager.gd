@@ -206,9 +206,7 @@ var phrases_normal = [
 	]
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#available_items = kitchen.get_available_items().duplicate()
 	reset_items()
-	pass # Replace with function body.
 
 func set_button(button:IngredientButton):
 	var ingredient = available_items.pick_random() # Get random ingredient

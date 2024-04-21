@@ -20,6 +20,9 @@ var current_screen = ""
 
 var in_game = false
 
+@onready var kitchen = $"../../GameManager/Kitchen"
+
+
 # Leaderboard stuff
 @onready var leaderboard_scene = preload("res://addons/silent_wolf/Scores/Leaderboard.tscn")
 
@@ -43,8 +46,6 @@ func _ready():
 	
 
 func _process(delta):
-	if menu_screen.visible:
-		message_box.set_text("Welcome to INFINITY BURGER!")
 	if not game_screen.visible:
 		if table.position.y > 50:
 			table.position.y -= 0.5
@@ -57,6 +58,8 @@ func _process(delta):
 		message_box.set_text("INFINITY BURGER was created for the Vertical Jam in 10 days!")
 
 func game_over():
+	kitchen.stop_game_timer()
+	
 	SilentWolf.Scores.save_score("AsePlayer", buttons.points) # to save score online
 	buttons.button.spawn_exit_bun()
 	in_game = false
@@ -66,7 +69,8 @@ func game_over():
 	"You can spam ingredients to recover lost ground… at a price", 
 	"The infinity burger's value is based on following the AI’s recipe",
 	"Once the burger hits the bottom of the screen, it's game over!",
-	"See how you stack up to the competition in the leaderboard!"]
+	"See how you stack up to the competition in the leaderboard!",
+	"Don't deviate from the recipe"]
 	
 	message_box.set_text("TIP: " + tips.pick_random())
 	set_screen("game_over")
@@ -96,6 +100,7 @@ func _on_play_button_button_down():
 	print("Pressed Play Button")
 	table.position.y = 50	# lock autoscroll in place
 	set_screen("game")
+	kitchen.start_game_timer()
 	buttons.reset_items()
 	buttons.button.spawn_starter_bun()
 	# Remove previous burger
@@ -110,7 +115,7 @@ func _on_play_button_button_down():
 func _on_customize_button_button_down():
 	print("Pressed Customize Button")
 	set_screen("customize")
-	message_box.set_text("Stylize your experience!")
+	message_box.set_text("Choose your background!")
 	pass # Replace with function body.
 
 func set_screen(screen):
@@ -124,7 +129,7 @@ func set_screen(screen):
 	
 	if current_screen == "menu":
 		menu_screen.visible = true
-		#table.position.y = 50
+		message_box.set_text("Welcome to INFINITY BURGER!")
 	if current_screen == "game":
 		game_screen.visible = true
 	if current_screen == "game_over" or current_screen == "gameover":
@@ -134,7 +139,26 @@ func set_screen(screen):
 	if current_screen == "credits":
 		credits_screen.visible = true
 
-
-func _on_leaderboard_button_button_down():
+func _on_leaderboard_button_pressed():
 	get_tree().change_scene_to_packed(leaderboard_scene)
+
+
+func _on_play_button_mouse_entered():
+	message_box.set_text("Build the Infinity Burger!")
+
+
+func _on_leaderboard_button_mouse_entered():
+	message_box.set_text("See how you stack up against the competition in the leaderboard!")
+
+
+func _on_credits_button_mouse_entered():
+	message_box.set_text("Credits and attributions!")
+
+
+func _on_customize_button_mouse_entered():
+	message_box.set_text("Stylize your experience!")
+
+
+func _on_how_to_play_button_mouse_entered():
+	message_box.set_text("How to play: Click/tap buttons on the tablet to follow Burger Buddy A.I.'s perfect instructions!")
 	pass # Replace with function body.
