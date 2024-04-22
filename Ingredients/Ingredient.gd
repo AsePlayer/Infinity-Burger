@@ -12,8 +12,11 @@ var fall_speed = 1000  # Adjust the fall speed as needed
 
 static var latest_ingredient:Ingredient
 
+var markup = 2
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	value *= markup
 	self.texture = sprite
 	latest_ingredient = self
 	pass # Replace with function body.

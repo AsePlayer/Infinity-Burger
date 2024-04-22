@@ -11,23 +11,9 @@ func _ready():
 	pass # Replace with function body.
 
 func _on_item_clicked(index, at_position, mouse_button_index):
-	var purchases = game_data.get_data("screen_colors")
-	print(purchases)
-	if confirm_purchase:
-		# Purchase logic
-		print("Purchased item?")
-		pass
-		
-	if not confirm_purchase:
-		confirm_purchase = true
-		print("Item not purchased.")
-		# Send notification with the price
-		# if money > game_data.get_data("screen_color_unlocks"[index]):
-		pass
-		
-	
-	game_data.modify_data("screen_color", index)
-	screen.texture = get_item_icon(index)
+	if mouse_button_index == 1:
+		game_data.modify_data("screen_color", index)
+		screen.texture = get_item_icon(index)
 	pass # Replace with function body.
 
 

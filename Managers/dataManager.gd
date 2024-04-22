@@ -1,16 +1,16 @@
 extends Node2D
 
 var json = JSON.new()
-var path = "res://data.json"
+var path = "user://data.json"
 
 @onready var buttons = $"../../Tablet/Screen/GameScreen/Buttons"
 
 var default_data = {
 	"money": 0,
 	"screen_color": 0,
-	"music": "default",
+	"music": 0,
 	"name": "BurgerBoi",
-	"screen_colors": [[0, false, 100],[1, false, 200],[2, false, 500],[3, false, 1000],[4, false, 1000],[5, false, 1000]]	
+	"highscore": 0
 }
 # Player's actual data
 var save_data = default_data
@@ -24,6 +24,9 @@ func _ready():
 func save_game():
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	save_data["money"] += buttons.points
+	if save_data["highscore"] < buttons.points:
+		save_data["highscore"] = buttons.points
+		
 	print("added this many points to save: " + str(buttons.points))
 	buttons.points = 0
 	buttons.dollars_for_burger.text = "[center]%s[/center]" % ("$0")
@@ -35,7 +38,7 @@ func save_game():
 
 func load_game():
 	var file = FileAccess.open(path, FileAccess.READ)
-	if file == null:
+	if file == null or file.get_length() < 1:
 		save_game() # No save file exists. Save with default data
 		file = FileAccess.open(path, FileAccess.READ)
 		

@@ -1,6 +1,7 @@
 extends Control
 
 @onready var game_manager = get_owner().get_child(0)
+@onready var data = $"../../../../GameManager/Data"
 
 @export var kitchen:Kitchen
 
@@ -20,6 +21,7 @@ var correct_item_name = ""
 @export var dollars_total:RichTextLabel
 @export var dollars_for_burger:RichTextLabel
 @export var total_value_gameover_screen:RichTextLabel
+@export var highscore_value:RichTextLabel
 
 var points:float
 
@@ -236,7 +238,9 @@ func reset_items():
 		correct_item = (((button_4 as IngredientButton).ingredient.instantiate() as Ingredient))
 	
 	dollars_for_burger.text = "[center]%s[/center]" % ("$" + str(points))
-	total_value_gameover_screen.text = ("$" + str(points))
+	total_value_gameover_screen.text = "[right]%s[/right]" % ("$" + str(points))
+	
+	highscore_value.text = "[right]%s[/right]" % ("$" + str(data.get_data("highscore")))
 	correct_item_name = correct_item.food_name
 	print("Correct item = " + str(correct_item_name) + " or button #" + str(correct_item_id + 1))
 	
