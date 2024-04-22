@@ -29,7 +29,7 @@ func _process(delta):
 	if screen_manager.in_game == false: return
 	
 	if ramp_up < 100:
-		ramp_up = 5 + get_child_count() / 2
+		ramp_up = 5 + get_child_count() / 3
 			
 	position.y += ramp_up * delta
 	background_node.position.y += ramp_up * delta

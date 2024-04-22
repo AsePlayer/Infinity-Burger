@@ -5,6 +5,9 @@ extends Sprite2D
 @onready var credits_screen = $CreditsScreen
 @onready var customize_screen = $CustomizeScreen
 @onready var game_over_screen = $GameOverScreen
+@onready var login_screen = $LoginScreen
+@onready var line_edit = $LoginScreen/LineEdit
+@onready var music_screen = $MusicScreen
 
 
 @onready var play_button = $MenuScreen/PlayButton
@@ -28,12 +31,13 @@ var in_game = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_screen("menu")
-	menu_screen.visible = true
-	pass # Replace with function body.
+	# Setup username for first time player, check for default "BurgerBoi"
+	if data.get_data("name") == "BurgerBoi":
+		set_screen("login")
+	else:
+		set_screen("menu")
 	
 	# Leaderboard Stuff
-	
 	SilentWolf.configure({
 		"api_key": "3tlwQQ11PD1d1HgxNdM1B91WOk0EGNnb7paCxeDY",
 		"game_id": "InfinityBurger1",
@@ -60,7 +64,7 @@ func _process(delta):
 func game_over():
 	kitchen.stop_game_timer()
 	
-	SilentWolf.Scores.save_score("AsePlayer", buttons.points) # to save score online
+	SilentWolf.Scores.save_score(data.get_data("name"), buttons.points) # to save score online
 	buttons.button.spawn_exit_bun()
 	in_game = false
 	data.save_game()
@@ -70,7 +74,8 @@ func game_over():
 	"The infinity burger's value is based on following the AI’s recipe",
 	"Once the burger hits the bottom of the screen, it's game over!",
 	"See how you stack up to the competition in the leaderboard!",
-	"Don't deviate from the recipe"]
+	"Don't deviate from the recipe",
+	"Don't drink and drive"]
 	
 	message_box.set_text("TIP: " + tips.pick_random())
 	set_screen("game_over")
@@ -85,6 +90,11 @@ func set_message(message):
 func _on_credits_button_button_down():
 	print("Pressed Credits Button")
 	set_screen("credits")
+	pass # Replace with function body.
+
+func _on_rename_button_button_down():
+	set_screen("login")
+	line_edit.text = data.get_data("name")
 	pass # Replace with function body.
 
 
@@ -126,10 +136,12 @@ func set_screen(screen):
 	game_over_screen.visible = false
 	customize_screen.visible = false
 	credits_screen.visible = false
+	login_screen.visible = false
+	music_screen.visible = false
 	
 	if current_screen == "menu":
 		menu_screen.visible = true
-		message_box.set_text("Welcome to INFINITY BURGER!")
+		message_box.set_text("Welcome to INFINITY BURGER, " + data.get_data("name") + "!")
 	if current_screen == "game":
 		game_screen.visible = true
 	if current_screen == "game_over" or current_screen == "gameover":
@@ -138,13 +150,24 @@ func set_screen(screen):
 		customize_screen.visible = true
 	if current_screen == "credits":
 		credits_screen.visible = true
+	if current_screen == "login":
+		login_screen.visible = true
+		message_box.set_text("I'm Burger Buddy A.I.! What's your name?")
+	if current_screen == "music":
+		message_box.set_text("Choose a track to inspire the perfect Infinity Burger!")
+		music_screen.visible = true
+		pass
 
 func _on_leaderboard_button_pressed():
 	get_tree().change_scene_to_packed(leaderboard_scene)
 
+func _on_music_button_button_down():
+	set_screen("music")
+	pass # Replace with function body.
+	
 
 func _on_play_button_mouse_entered():
-	message_box.set_text("Build the Infinity Burger!")
+	message_box.set_text("Play the game and build a legendary Infinity Burger!")
 
 
 func _on_leaderboard_button_mouse_entered():
@@ -162,3 +185,18 @@ func _on_customize_button_mouse_entered():
 func _on_how_to_play_button_mouse_entered():
 	message_box.set_text("How to play: Click/tap buttons on the tablet to follow Burger Buddy A.I.'s perfect instructions!")
 	pass # Replace with function body.
+
+
+func _on_login_button_button_down():
+	data.modify_data("name", line_edit.text)
+	set_screen("menu")
+	pass # Replace with function body.
+
+
+func _on_rename_button_mouse_entered():
+	message_box.set_text("Change your name into something far greater.")
+	pass # Replace with function body.
+
+
+func _on_music_button_mouse_entered():
+	message_box.set_text("Change yo tunes!")
